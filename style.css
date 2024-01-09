@@ -1,0 +1,224 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('baner.png');
+    background-size: cover;
+    background-attachment: fixed;
+    text-align: center; /* Centrowanie tekstu */
+  }
+  /* Zmodyfikuj z-index dla menu, aby ukryć je pod modalem */
+#menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    padding: 10px;
+    background-color: rgba(240, 240, 240, 0.8);
+    z-index: 0; /* Ustaw niższy z-index */
+  }
+  
+  /* Przywróć domyślny z-index menu po zamknięciu modala */
+  #menu.active {
+    z-index: 1000;
+  }
+  #menu a {
+    text-decoration: none;
+    color: #333;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  #content {
+    padding-top: 100px; /* Zwiększenie odstępu na treści pod menu */
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #333;
+  }
+  /* Dodatkowe style dla divów z informacjami */
+  /* .info-block {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow: auto;
+    width: 45%; /* Ustawienie szerokości bloku na 45% */
+    /* margin-right: 5%; Dodanie odstępu między blokami */
+    /* float: left; Umieszczenie bloków w jednej linii */
+    /* box-sizing: border-box; Uwzględnienie paddingu i marginesu w szerokości */
+  /* } */ 
+
+  /* Zresetowanie marginesu dla ostatniego bloku, aby nie miał dodatkowego odstępu */
+  /* .info-block:last-child {
+    margin-right: 0;
+  } */
+
+  .info-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Wyrównanie bloków do środka */
+}
+
+.info-block {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 45%;
+    box-sizing: border-box;
+}
+
+.info-block:not(:last-child) {
+    margin-right: 5%; /* Dodanie odstępu między blokami */
+}
+
+/* Dla mniejszych ekranów lub mobilnych możesz zmniejszyć szerokość bloków */
+@media screen and (max-width: 768px) {
+    .info-block {
+        width: 100%;
+        margin-right: 0; /* Usunięcie odstępu między blokami */
+    }
+}
+
+
+
+
+
+.preview-image {
+    max-width: 100px; /* Maksymalna szerokość obrazu */
+    max-height: 100px; /* Maksymalna wysokość obrazu */
+    border: 1px solid #ccc; /* Ramka */
+    border-radius: 8px; /* Zaokrąglone krawędzie */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Cień */
+    margin: 5px; /* Margines między podglądami */
+}
+
+
+.thumbnail {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 5px;
+    float: left;
+    cursor: pointer;
+  }
+  
+  /* Dodaj nową klasę, która ukryje menu podczas wyświetlania modala */
+.hide-menu {
+    display: none;
+  }
+  
+  /* Zmień styl dla modala */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+  
+  /* Dodaj styl dla modala, gdy jest widoczny */
+  .modal.active {
+    display: block;
+  }
+  
+  /* Styl dla zdjęcia w modalu */
+  .modal-content {
+    margin: auto;
+    display: block;
+    margin-top: 50px;
+    max-width: 80%;
+    max-height: 80%;
+  }
+  
+  /* Styl dla przycisku zamknięcia w modalu */
+  .close {
+    position: absolute;
+    top: 50px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+
+
+
+
+
+
+
+
+  /* Dodatkowe style dla napisu "Wirtualna Księga Gości" */
+  #page-title {
+    font-family: Roboto;
+    font-size: 60px;
+    font-weight: bold;
+    margin-top: 200px;
+    color: #000000;
+    margin-bottom: 200px;
+  }
+
+  #passwordForm, #uploadForm {
+    display: block;
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  #uploadForm {
+    display: none; /* Ukryj formularz do przesyłania plików początkowo */
+  }
+  #fileInput {
+    margin-bottom: 10px;
+  }
+
+  #progressBar {
+    width: 300px;
+    height: 20px;
+    border: 1px solid #000;
+    display: none;
+    position: relative;
+    background-color: #5cb85c; /* kolor tła */
+}
+
+#progressBar:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 100%;
+    background-color: #fff; /* kolor wypełnienia */
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    line-height: 20px;
+    color: #000; /* kolor tekstu */
+}
+
+#status {
+    margin-top: 5px;
+}

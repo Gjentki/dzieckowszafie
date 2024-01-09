@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDNIÓWKA ZS6</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+      
+      <div id="menu">
+        <a href="index.html">Home</a>
+        <a href="upload.html">Upload</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="info.html">Privacy Policy</a>
+      </div>
+     
+      <div id="content">
+        <div id="page-title">Upload zdjęć</div>
+        <div class="info-container">
+        <div class="info-block">
+        <div id="passwordForm">
+            <h1>Wprowadź hasło, aby uzyskać dostęp do przesyłania plików</h1>
+            <form id="passwordForm">
+              <label for="password">Hasło:</label>
+              <input type="password" id="password" name="password">
+              <input type="submit" value="Dołącz">
+            </form>
+          </div>
+          <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
+            Wybierz pliki do przesłania (JPG, JPEG, PNG, GIF):
+            <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
+            <input type="submit" value="Prześlij zdjęcia" name="submit">
+            <div class="preview" id="preview-container"></div>
+        </form>
+          <div id="progressBar">
+            <div id="progressStatus"></div>
+        </div>
+        <div id="status"></div>
+</div>
+</div>
+
+        <!-- <div class="info-block">
+            
+          </div> -->
+    
+    </div>
+      <script>
+        $(document).ready(function(){
+    $('#fileToUpload').change(function(e){
+        var previewContainer = $('#preview-container');
+        previewContainer.empty(); // Wyczyść poprzednie podglądy
+
+        var files = e.target.files;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if (file.type.match('image.*')) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var imgElement = $('<img>');
+                    imgElement.attr('src', event.target.result);
+                    imgElement.addClass('preview-image');
+                    previewContainer.append(imgElement);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    });
+
+    $('#uploadForm').submit(function(e){
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
+
+        // Dodanie wszystkich plików z pola input file
+        var files = $('#fileToUpload')[0].files;
+        for (let i = 0; i < files.length; i++) {
+            formData.append('fileToUpload[]', files[i]);
+        }
+
+        // Pokazanie paska postępu przed rozpoczęciem przesyłania
+        $('#progressBar').show();
+
+        $.ajax({
+            url: 'upload.php',
+            type: 'POST',
+            data: formData,
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        $('#progressBar').css({ width: percentComplete * 100 + '%' });
+                        $('#status').html(Math.round(percentComplete * 100) + '% przesłano');
+                    }
+                }, false);
+                return xhr;
+            },
+            success: function(data) {
+                $('#status').html('Plik został przesłany');
+                $('#file').val(''); // Wyczyszczenie pola wyboru plików
+
+                setTimeout(() => {
+                    window.location.href = 'index.html'; // Przekierowanie użytkownika na główną stronę
+
+                    // Ukrycie paska postępu po zakończeniu przekierowania
+                    $('#progressBar').hide();
+                }, 2000);
+            },
+            error: function() {
+                $('#status').html('Wystąpił błąd podczas przesyłania pliku');
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+});
+
+    </script>
+    <script>
+        const correctPassword = "2024"; // Prawidłowe hasło tajnie ukryte
+    
+        document.getElementById("passwordForm").addEventListener("submit", function(event) {
+          event.preventDefault();
+          const password = document.getElementById("password").value;
+    
+          if (password === correctPassword) {
+            document.getElementById("passwordForm").style.display = "none"; // Ukryj formularz hasła
+            document.getElementById("uploadForm").style.display = "block"; // Pokaż formularz uploadu
+          } else {
+            alert("Nieprawidłowe hasło. Spróbuj ponownie.");
+          }
+        });
+      </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>STUDNIÓWKA ZS6</title>
+</head>
+<body>
+    
+      
+      <div id="menu">
+        <a href="index.html">Home</a>
+        <a href="upload.html">Upload</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="info.html">Privacy Policy</a>
+      </div>
+      <div id="content">
+        <div id="page-title">Gallery</div>
+      
+
+        <div class="info-container">
+        <div class="info-block">
+         
+            <!-- Galeria -->
+  <div class="gallery" id="gallery"></div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modal-img">
+  </div>
+
+
+
+
+
+
+
+      </div>
+      </div>
+
+
+
+
+
+
+
+
+      <script>
+        var galleryContainer = document.getElementById('gallery');
+        loadImages();
+    
+        function loadImages() {
+  fetch('get_images.php') // Pobranie listy plików z serwera
+    .then(response => response.json())
+    .then(images => {
+      if (Array.isArray(images)) {
+        images.forEach(image => {
+          var thumbnail = document.createElement('div');
+          thumbnail.classList.add('thumbnail');
+
+          var img = document.createElement('img');
+          img.src = 'thumbnails/' + image; // Użyj miniatury zamiast oryginalnego obrazu
+          img.addEventListener('click', function() {
+            openModal('uploads/' + image); // Pokaż oryginalny obraz po kliknięciu na miniaturę
+          });
+
+          thumbnail.appendChild(img);
+          galleryContainer.appendChild(thumbnail);
+        });
+      } else {
+        console.error('Błąd: Nieprawidłowy format danych z get_images.php');
+      }
+    })
+    .catch(error => console.error('Błąd:', error));
+}
+    
+        function openModal(image) {
+          var modal = document.getElementById('modal');
+          var modalImg = document.getElementById('modal-img');
+          modal.style.display = 'block';
+          modalImg.src = image;
+    
+          var closeModal = document.getElementsByClassName('close')[0];
+          closeModal.onclick = function() {
+            modal.style.display = 'none';
+          };
+    
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = 'none';
+            }
+          };
+        }
+      </script>
+      <script>
+        
+      </script>
+</body>
+</html>
